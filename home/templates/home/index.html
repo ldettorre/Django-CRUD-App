@@ -1,0 +1,12 @@
+{% extends 'home/base.html' %}
+{% block content %}
+<h3>Welcome to Django!</h3>
+
+<ul>
+    {% for book in books %}
+    <img src="{{MEDIA_URL}}{{book.image}}" width = 200px/>
+    <li>{{book.name}}-{{book.author}} {{book.notes}}</li>
+    {% endfor %}
+</ul>
+<a href ="{% url 'add_book' %}">Add Book</a>
+{% endblock content%}
