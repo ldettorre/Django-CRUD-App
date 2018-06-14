@@ -5,14 +5,19 @@ from .models import Book
 # Create your views here.
 
 def book_list(request):
-    books = Book.objects.all()
-    return render(request, 'books/list_books.html', {'books':books})
+     if request.user.is_authenticated:
+        books = Book.objects.filter(owner=request.user)
+     else:
+        books = []
+     return render(request, 'books/list_books.html', {'books': books})
 
 def add_book(request):
     if request.method=="POST":
         form=AddBookForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            book=form.save(commit=False)
+            book.owner = request.user
+            book.save()
         return redirect("/")
         
     else:
